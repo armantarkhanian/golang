@@ -20,7 +20,8 @@ func main() {
 	if arman.Friend == "Паша" {
 		fmt.Println("Арман и Паша друзья")
 	}
+
 	if pavel.Friend == "Арман" {
-		fmt.Println("Паша и Арман друзья")
+		fmt.Println("Арман и Паша друзья")
 	}
 }
