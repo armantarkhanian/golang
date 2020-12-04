@@ -12,8 +12,10 @@ func main() {
 	var tableData = []map[string]string{}
 	var collumns = []string{}
 	inputReader := bufio.NewReader(os.Stdin)
+	counter := 1
 	for {
-		fmt.Print("Введите колонку: ")
+		fmt.Printf("Название %v столбца: ", counter)
+		counter++
 		collumn, err := inputReader.ReadString('\n')
 		if err != nil {
 			panic(err)
@@ -27,14 +29,16 @@ func main() {
 		}
 		collumns = append(collumns, collumn)
 	}
-
+	counter = 1
 	for {
-		fmt.Print("\n\nДобавление записи в таблицу\n\n")
+		fmt.Print("\n")
 		data := make(map[string]string)
+		var inputData string
 		for i := 0; i < len(collumns); i++ {
 			collumn := strings.TrimSpace(collumns[i])
-			fmt.Printf("Введите %s: ", collumn)
-			inputData, err := inputReader.ReadString('\n')
+			var err error
+			fmt.Printf("[%v строка] %q = ", counter, collumn)
+			inputData, err = inputReader.ReadString('\n')
 			if err != nil {
 				panic(err)
 			}
@@ -48,17 +52,12 @@ func main() {
 				collumns[i] += strings.Repeat(" ", utf8.RuneCountInString(data[collumn])-utf8.RuneCountInString(collumns[i]))
 			}
 		}
-		tableData = append(tableData, data)
-		fmt.Print("Добавить еще запись в таблицу?: ")
-
-		inputData, err := inputReader.ReadString('\n')
-		if err != nil {
-			panic(err)
-		}
-		inputData = strings.TrimSpace(inputData)
 		if inputData == "0" {
 			break
 		}
+		tableData = append(tableData, data)
+		counter++
+
 	}
 	fmt.Println("")
 	fmt.Println("Ваша таблица: ")
