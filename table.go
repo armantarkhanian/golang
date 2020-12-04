@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"unicode/utf8"
 )
 
 func main() {
@@ -29,9 +30,7 @@ func main() {
 		data := make(map[string]string)
 		for i := 0; i < len(collumns); i++ {
 			collumn := strings.TrimSpace(collumns[i])
-
 			fmt.Printf("Введите %s: ", collumn)
-
 			inputData, err := inputReader.ReadString('\n')
 			if err != nil {
 				panic(err)
@@ -40,15 +39,13 @@ func main() {
 			if inputData == "0" {
 				break
 			}
-
 			data[collumn] = inputData
 
-			if len(data[collumn]) > len(collumns[i]) {
-				collumns[i] += strings.Repeat(" ", len(data[collumn])-len(collumns[i]))
+			if utf8.RuneCountInString(data[collumn]) > len(collumns[i]) {
+				collumns[i] += strings.Repeat(" ", utf8.RuneCountInString(data[collumn])-len(collumns[i]))
 			}
 		}
 		tableData = append(tableData, data)
-
 		fmt.Print("Добавить еще запись в таблицу?: ")
 
 		inputData, err := inputReader.ReadString('\n')
@@ -60,6 +57,9 @@ func main() {
 			break
 		}
 	}
+
+	fmt.Println("")
+	fmt.Println("Ваша таблица: ")
 
 	var line string
 	for i := 0; i < len(collumns); i++ {
@@ -84,8 +84,8 @@ func main() {
 		tr := ""
 		for j := 0; j < len(collumns); j++ {
 			collumn := strings.TrimSpace(collumns[j])
-			if len(tableData[i][collumn]) < len(collumns[j]) {
-				tableData[i][collumn] += strings.Repeat(" ", len(collumns[j])-len(tableData[i][collumn]))
+			if utf8.RuneCountInString(tableData[i][collumn]) < len(collumns[j]) {
+				tableData[i][collumn] += strings.Repeat(" ", len(collumns[j])-utf8.RuneCountInString(tableData[i][collumn]))
 			}
 
 			if j+1 == len(collumns) {
