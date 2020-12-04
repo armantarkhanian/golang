@@ -22,6 +22,9 @@ func main() {
 		if collumn == "0" {
 			break
 		}
+		if collumn == "" {
+			continue
+		}
 		collumns = append(collumns, collumn)
 	}
 
