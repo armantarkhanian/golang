@@ -44,8 +44,8 @@ func main() {
 			}
 			data[collumn] = inputData
 
-			if utf8.RuneCountInString(data[collumn]) > len(collumns[i]) {
-				collumns[i] += strings.Repeat(" ", utf8.RuneCountInString(data[collumn])-len(collumns[i]))
+			if utf8.RuneCountInString(data[collumn]) > utf8.RuneCountInString(collumns[i]) {
+				collumns[i] += strings.Repeat(" ", utf8.RuneCountInString(data[collumn])-utf8.RuneCountInString(collumns[i]))
 			}
 		}
 		tableData = append(tableData, data)
@@ -60,19 +60,17 @@ func main() {
 			break
 		}
 	}
-
 	fmt.Println("")
 	fmt.Println("Ваша таблица: ")
 
 	var line string
 	for i := 0; i < len(collumns); i++ {
 		if i+1 == len(collumns) {
-			line += fmt.Sprintf("+%s+", strings.Repeat("-", len(collumns[i])+2))
+			line += fmt.Sprintf("+%s+", strings.Repeat("-", utf8.RuneCountInString(collumns[i])+2))
 		} else {
-			line += fmt.Sprintf("+%s", strings.Repeat("-", len(collumns[i])+2))
+			line += fmt.Sprintf("+%s", strings.Repeat("-", utf8.RuneCountInString(collumns[i])+2))
 		}
 	}
-
 	fmt.Println(line)
 	for i := 0; i < len(collumns); i++ {
 		if i+1 == len(collumns) {
@@ -87,10 +85,9 @@ func main() {
 		tr := ""
 		for j := 0; j < len(collumns); j++ {
 			collumn := strings.TrimSpace(collumns[j])
-			if utf8.RuneCountInString(tableData[i][collumn]) < len(collumns[j]) {
-				tableData[i][collumn] += strings.Repeat(" ", len(collumns[j])-utf8.RuneCountInString(tableData[i][collumn]))
+			if utf8.RuneCountInString(tableData[i][collumn]) < utf8.RuneCountInString(collumns[j]) {
+				tableData[i][collumn] += strings.Repeat(" ", utf8.RuneCountInString(collumns[j])-utf8.RuneCountInString(tableData[i][collumn]))
 			}
-
 			if j+1 == len(collumns) {
 				tr += fmt.Sprintf("| %s |\n", tableData[i][collumn])
 			} else {
